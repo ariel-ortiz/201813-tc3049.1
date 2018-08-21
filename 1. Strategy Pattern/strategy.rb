@@ -42,3 +42,33 @@ class Course
   end
 
 end
+
+class CountGenderStrategy < StudentStrategy
+
+  def initialize(gender)
+    @gender = gender
+  end
+
+  def execute(array)
+    array.count {|s| s.gender == @gender }
+  end
+
+end
+
+class ComputeAverageGPAStrategy < StudentStrategy
+
+  def execute(array)
+    return nil if array.empty?
+    (array.sum {|s| s.gpa }) / array.length
+  end
+
+end
+
+class BestGPAStrategy < StudentStrategy
+
+  def execute(array)
+    return nil if array.empty?
+    (array.max {|a, b| a.gpa <=> b.gpa }).name
+  end
+
+end
