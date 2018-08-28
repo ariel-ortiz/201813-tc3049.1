@@ -18,17 +18,17 @@ class Student
   end
 
   def display_personal_info_and_disclaimer
-    # Display Personal Information
+    display_personal_information
+    display_disclaimer
+  end
+
+  def display_personal_information
     puts "Name: #{ @name } ID: #{ @id }"
     puts "Anual income: #{ @anual_income }"
-    sum = 0
-    @grades.each do |grade|
-      sum += grade
-    end
-    average = sum / @grades.size.to_f
     puts "Grade average: #{ average }"
+  end
 
-    # Display Disclaimer
+  def display_disclaimer
     puts 'The contents of this class must not be considered an offer,'
     puts 'proposal, understanding or agreement unless it is confirmed'
     puts 'in a document signed by at least five blood-sucking lawyers.'
@@ -40,12 +40,15 @@ class Student
 
     # A student is worthy of a scholarship if he/she has good grades and
     # is poor.
+    (average >= GOOD_GRADE) and (@anual_income < POOR_INCOME)
+  end
+
+  def average
     sum = 0
     @grades.each do |grade|
       sum += grade
     end
-    average = sum / @grades.size.to_f
-    (average >= GOOD_GRADE) and (@anual_income < POOR_INCOME)
+    sum / @grades.size.to_f
   end
 
 end
