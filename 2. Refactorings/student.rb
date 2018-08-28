@@ -45,11 +45,7 @@ class Student
   end
 
   def average
-    sum = 0
-    @grades.each do |grade|
-      sum += grade
-    end
-    sum / @grades.size.to_f
+    @grades.inject(0, :+) / @grades.size.to_f
   end
 
 end
