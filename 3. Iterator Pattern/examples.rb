@@ -8,16 +8,31 @@ class Pow2
   end
 end
 
-Pow2.new.each {|e| puts e}
+# Pow2.new.each {|e| puts e}
 
-puts
+# puts
 
-it = Pow2.new.to_enum
+# it = Pow2.new.to_enum
 
-begin
+# begin
+#   10.times do
+#     puts it.next
+#   end
+# rescue StopIteration
+#   puts 'Stopped!'
+# end
+
+generator = Enumerator.new do |yielder|
+  n = 1
   10.times do
-    puts it.next
+    yielder << n
+    n *= 10
   end
-rescue StopIteration
-  puts 'Stopped!'
 end
+
+puts generator.next
+puts generator.next
+puts generator.next
+puts generator.next
+
+p generator.to_a
