@@ -1,25 +1,31 @@
 #--------------------------------------------------------------------
-# An external iterator for an array.
-# Taken from [OLSEN] pp 128-129.
-class ArrayIterator
+# Adapt a Ruby Enumerator object so that is behaves like the
+# provided ArrayIterator.
+class EnumeratorAdaptor
 
-  def initialize(array)
-    @array = array
-    @index = 0
+  def initialize(enumerator)
+    @enumerator = enumerator
   end
 
   def has_next?
-    @index < @array.length
+    begin
+      @enumerator.peek
+      true
+    rescue StopIteration
+      false
+    end
   end
 
   def item
-    @array[@index]
+    @enumerator.peek
   end
 
   def next_item
-    value = @array[@index]
-    @index += 1
-    value
+    if has_next?
+      @enumerator.next
+    else
+      nil
+    end
   end
 end
 
@@ -29,8 +35,8 @@ end
 def merge(array1, array2)
   merged = []
 
-  iterator1 = ArrayIterator.new(array1)
-  iterator2 = ArrayIterator.new(array2)
+  iterator1 = EnumeratorAdaptor.new(array1.to_enum)
+  iterator2 = EnumeratorAdaptor.new(array2.to_enum)
 
   while (iterator1.has_next? and iterator2.has_next?)
     if iterator1.item < iterator2.item
@@ -52,3 +58,8 @@ def merge(array1, array2)
 
   merged
 end
+
+a = [3, 4, 5, 5, 7, 9, 10]
+b = [1, 2, 3, 3, 4, 5, 9, 11, 15]
+p merge(a, b)
+
