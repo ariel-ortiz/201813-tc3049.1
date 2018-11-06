@@ -27,3 +27,21 @@ get '/questions' do
     }
   end)
 end
+
+def convert_to_int(str)
+  begin
+    Integer(str)
+  rescue ArgumentError
+    -1
+  end
+end
+
+get '/questions/:id' do
+  id_str = params['id']
+  id = convert_to_int(id_str)
+  if 0 <= id and id < QUESTIONS.size
+    JSON.pretty_generate(QUESTIONS[id])
+  else
+    [404, {'error' => 'Question not found with ID = #{ id_str }'}.to_json]
+  end
+end
